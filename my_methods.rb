@@ -51,12 +51,19 @@ def my_count(array)
   count
 end
 
-def my_map
-
+def my_map(array, funct)
+  result_array = []
+  for item in array
+    result_array.push(method(funct).call(item))
+  end
+  return result_array
 end
 
-def my_inject
-
+def my_inject(array, result, funct)
+  for item in array
+    result = method(funct).call(result, item)
+  end
+  return result
 end
 
 #
@@ -74,19 +81,25 @@ end
 #
 
 
-my_All_res = my_all(%w[dcd fdfdf dfdf dfdf dfdfd]) do |item|
-  true if item.length > 6
+# my_All_res = my_all(%w[dcd fdfdf dfdf dfdf dfdfd]) do |item|
+#   true if item.length > 6
+# end
+#
+# my_any_res = my_any(%w[dcd fdfdf dfdf dfdf dfdfdas]) do |item|
+#   true if item.length > 6
+# end
+#
+# my_none_res = my_none(%w[dcd fdfdf dfdf dfdf dfdf]) do |item|
+#   true if item.length > 6
+# end
+#
+# puts my_All_res
+# puts my_any_res
+# puts my_none_res
+# puts my_count([43,34,35,'sds',3434]);
+#
+def temp(result, x)
+  return result - x
 end
 
-my_any_res = my_any(%w[dcd fdfdf dfdf dfdf dfdfdas]) do |item|
-  true if item.length > 6
-end
-
-my_none_res = my_none(%w[dcd fdfdf dfdf dfdf dfdf]) do |item|
-  true if item.length > 6
-end
-
-puts my_All_res
-puts my_any_res
-puts my_none_res
-puts my_count([43,34,35,'sds',3434]);
+print my_inject([3, 234, 123, 2, 1, 23], 0,:temp)
