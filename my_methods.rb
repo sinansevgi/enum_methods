@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-def Enumerable
+module Enumerable
   def my_each(array)
     for item in array
       yield item
