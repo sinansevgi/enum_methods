@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # rubocop:disable all
 module Enumerable
   def my_each(array)
