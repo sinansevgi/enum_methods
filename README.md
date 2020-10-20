@@ -1,7 +1,7 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
-# Bubble Sort
-> Bubble Sort is the simplest sorting algorithm that works by repeatedly swapping the adjacent elements if they are in wrong order.
+# Enumerable
+> Enumerable is a collection of iteration method, a Ruby module and a great part of what makes ruby a great programming language. In this project, we try to customize some of the Ruby enumerable functions.
 
 ## Setup Instruction
 * Clone this Repo
@@ -47,11 +47,19 @@ my_none_res = my_none(%w[dcd fdfdf dfdf dfdf dfdf]) do |item|
 end
 puts my_none_res
 ```
+- For my_map
+```ruby
+print my_map([3, 234, 123, 2, 1, 23],:temp)
+```
+- For my_inject
+```ruby
+print my_inject([3, 234, 123, 2, 1, 23], 0,:temp)
+```
 
 * Finally, If you have ruby installed in your system, just run `bubblesort.rb`
 
 ## Live Demo
-[Live Demo Link](https://repl.it/@rukundoeric/AdvancedBuildingBlocksBubbleSort)
+[Live Demo Link](https://repl.it/@rukundoeric/enumerable)
 
 ## Built With
 
