@@ -1,5 +1,6 @@
 # rubocop: disable Metrics/ModuleLength
 # rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+# rubocop: disable Style/For
 
 module Enumerable
 
@@ -7,12 +8,8 @@ module Enumerable
     return to_enum(:my_each) unless block_given?
 
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
 
     for item in array
       yield item
@@ -24,12 +21,8 @@ module Enumerable
     return to_enum(:my_each_with_index) unless block_given?
 
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
 
     for i in (0...array.length)
       yield array[i], i
@@ -40,13 +33,9 @@ module Enumerable
     return to_enum(:my_select) unless block_given?
 
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
-    
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
+
     res = []
     for i in array
       res.push(i) if yield i
@@ -57,28 +46,20 @@ module Enumerable
   def my_all?(arg = nil)
     return false if (!block_given? && !arg)
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
 
     return true if array.empty?
 
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
-          return false if !array[i].is_a?(arg)
+          return false unless array[i].is_a?(arg)
         elsif arg.class == Regexp
           return false if array[i].match(arg).nil?
-        else
-          return false  unless array[i] != arg
+        else return false unless array[i] != arg
         end
-      else
-        if (!yield array[i])
-          return false
-        end
+      else return false if (!yield array[i])
       end
     end
 
@@ -87,12 +68,8 @@ module Enumerable
 
   def my_any?(arg = nil)
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
 
     return false if array.empty?
     return true if array.include? true
@@ -103,13 +80,9 @@ module Enumerable
           return true if array[i].is_a?(arg)
         elsif arg.class == Regexp
           return true if array[i].match(arg).nil?
-        else
-          return true  unless array[i] != arg
+        else return true unless array[i] != arg
         end
-      else
-        if (yield array[i])
-          return true
-        end
+      else return true if (yield array[i])
       end
     end
     return false
@@ -118,12 +91,8 @@ module Enumerable
   def my_none?(arg = nil)
     return true if (!block_given? && !arg)
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
 
     for i in 0...array.length
       if arg
@@ -131,13 +100,9 @@ module Enumerable
           return false if array[i].is_a?(arg)
         elsif arg.class == Regexp
           return false if array[i].match(arg).nil?
-        else
-          return false  unless array[i] != arg
+        else return false unless array[i] != arg
         end
-      else
-        if (yield array[i])
-          return false
-        end
+      else return false if (yield array[i])
       end
     end
 
@@ -145,30 +110,22 @@ module Enumerable
   end
 
   def my_count(arg = nil)
-    return self.length  if (!block_given? && !arg)
+    return self.length if (!block_given? && !arg)
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
 
     count = 0
 
-     for i in 0...array.length
+    for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
           count += 1 if array[i].is_a?(arg)
         elsif arg.class == Regexp
           count += 1 if array[i].match(arg).nil?
-        else
-          count += 1  unless array[i] != arg
+        else count += 1 unless array[i] != arg
         end
-      else
-        if yield array[i]
-          count += 1
-        end
+      else count += 1 if yield array[i]
       end
     end
 
@@ -176,55 +133,52 @@ module Enumerable
   end
 
   def my_map(arg = nil)
-    return to_enum(:my_map)  if (!block_given? && !arg)
-
+    return to_enum(:my_map) if (!block_given? && !arg)
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
 
     result_array = []
     for item in array
       if arg
         result_array.push(arg.yield(item))
-      else
-        result_array.push(yield item)
+      else result_array.push(yield item)
       end
     end
     return result_array
   end
 
   def my_inject(arg1 = nil, arg2 = nil)
-    # raise LocalJumpError  if (!block_given? or (!arg1 or !arg2))
+    raise LocalJumpError if !block_given? and !arg1
 
     array = self
-    case self.class
-    when Range
-      array = array.to_a
-    when Hash
-      array = array.values
-    end
-    result = array[0]
-    result = arg1 if arg1 and !arg1.is_a? Symbol
+    array = array.to_a if array.class == Range
+    array = array.values if array.class == Hash
 
-    puts result
-
-    for item in array
-      if arg1
-        if arg2
+    if arg1
+      if arg2
+        result = arg1
+        for item in array
           result = result.send(arg2, item)
-        elsif arg1.is_a? Symbol
-          result = result.send(arg1, item)
-        else  
-          result = yield result, item
         end
-      else
-         result = yield result, item  
+      elsif arg1.is_a? Symbol
+        result = array[0]
+        for item in 1...array.length
+          result = result.send(arg1, array[item])
+        end
+      else result = arg1
+      for item in array
+        result = yield result, item
+      end
+      end
+    else
+
+      result = array[0]
+      for item in 1...array.length
+        result = yield result, array[item]
       end
     end
+
     return result
   end
 end
