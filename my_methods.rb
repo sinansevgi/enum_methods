@@ -1,3 +1,10 @@
+# rubocop: disable Metrics/ModuleLength
+# rubocop: disable Metrics/MethodLength
+# rubocop: disable Style/For
+# rubocop: disable Metrics/BlockNesting
+# rubocop: disable Metrics/CyclomaticComplexity
+# rubocop: disable Metrics/PerceivedComplexity
+# rubocop: disable Style/IfInsideElse
 module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
@@ -6,7 +13,6 @@ module Enumerable
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
-    # noinspection RubyForLoopInspection
     for item in array
       yield item
     end
@@ -20,7 +26,6 @@ module Enumerable
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
-    # noinspection RubyForLoopInspection
     for i in (0...array.length)
       yield array[i], i
     end
@@ -34,7 +39,7 @@ module Enumerable
     array = array.values if array.class == Hash
 
     res = []
-    # noinspection RubyForLoopInspection
+
     for i in array
       res.push(i) if yield i
     end
@@ -50,7 +55,6 @@ module Enumerable
 
     return true if array.empty?
 
-    # noinspection RubyForLoopInspection
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
@@ -74,7 +78,6 @@ module Enumerable
     return false if array.empty?
     return true if array.include? true
 
-    # noinspection RubyForLoopInspection
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
@@ -96,7 +99,6 @@ module Enumerable
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
-    # noinspection RubyForLoopInspection
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
@@ -113,7 +115,7 @@ module Enumerable
   end
 
   def my_count(arg = nil)
-    return self.length if !block_given? && !arg
+    return length if !block_given? && !arg
 
     array = self
     array = array.to_a if array.class == Range
@@ -121,7 +123,6 @@ module Enumerable
 
     count = 0
 
-    # noinspection RubyForLoopInspection
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
@@ -145,7 +146,7 @@ module Enumerable
     array = array.values if array.class == Hash
 
     result_array = []
-    # noinspection RubyForLoopInspection
+
     for item in array
       if arg
         result_array.push(arg.yield(item))
@@ -165,26 +166,27 @@ module Enumerable
     if arg1
       if arg2
         result = arg1
-        # noinspection RubyForLoopInspection
+
         for item in array
           result = result.send(arg2, item)
         end
       elsif arg1.is_a? Symbol
         result = array[0]
-        # noinspection RubyForLoopInspection
+
         for item in 1...array.length
           result = result.send(arg1, array[item])
         end
-      else result = arg1
-      # noinspection RubyForLoopInspection
-      for item in array
-        result = yield result, item
-      end
+      else
+        result = arg1
+
+        for item in array
+          result = yield result, item
+        end
       end
     else
 
       result = array[0]
-      # noinspection RubyForLoopInspection
+
       for item in 1...array.length
         result = yield result, array[item]
       end
@@ -193,3 +195,5 @@ module Enumerable
     result
   end
 end
+
+# rubocop: enable all
