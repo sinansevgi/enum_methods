@@ -10,50 +10,91 @@
 
 - For my_each 
  ```ruby
- my_each ([3, 4, 5, 6]) do |item|
-   print item
- end
+[1, 2, 3, 5].my_each { |x| p x }
 ```
+- Output
+ ```bash
+=> 1
+=> 2
+=> 3
+=> 5
+```
+
 - For my_each_with_index
 ```ruby
- my_each_with_index([3, 4, 5, 6]) do |index, item|
-  puts "Index : #{index} and Value #{item}"
- end
+[1, 2, 3, 5].my_each_with_index { |x, y| puts "#{x} at #{y}" }
+```
+- Output
+
+ ```bash
+=> 1 at 0
+=> 2 at 1
+=> 3 at 2
+=> 5 at 3
 ```
 - For my_select
 ```ruby
-  my_select([3, 4, 5, 6, 2], 6) do |item|
-    puts item
-  end
+[1, 2, 3, 4].my_select { |x| x % 2 == 0}
+```
+- Output
+
+ ```bash
+=> [2, 4]
 ```
 - For my_all
 ```ruby
-  my_All_res = my_all(%w[dcd fdfdf dfdf dfdf dfdfd]) do |item|
-    true if item.length > 6
-  end
-  puts my_All_res
+['alpha', 'apple', 'allen key'].my_all?{ |x| x[0] == 'a' }
+```
+- Output
+
+ ```bash
+=> true
 ```
 - For my_any
 ```ruby
- my_any_res = my_any(%w[dcd fdfdf dfdf dfdf dfdfdas]) do |item|
-   true if item.length > 6
- end
-puts my_any_res
+['alpha', 'apple', 'allen key'].my_any?{ |x| x[-1] == 'y' }
 ```
-- For my_any
+- Output
+
+ ```bash
+=> true
+```
+- For my_none
 ```ruby
-my_none_res = my_none(%w[dcd fdfdf dfdf dfdf dfdf]) do |item|
-  true if item.length > 6
-end
-puts my_none_res
+['Alpha', 'Apple', 'Allen key'].my_none?{ |x| x[0] == 'z' }
+```
+- Output
+
+ ```bash
+=> true
+```
+- For my_count
+```ruby
+arr = [1, 2, 3, 4]
+arr.my_count { |i| i%2==0}
+```
+- Output
+
+ ```bash
+=> 2
 ```
 - For my_map
 ```ruby
-print my_map([3, 234, 123, 2, 1, 23],:temp)
+[1,2,3,4,4,7,7,7,9].my_map { |i| i*4 }
+```
+- Output
+
+ ```bash
+=> [4, 8, 12, 16, 16, 28, 28, 28, 36]
 ```
 - For my_inject
 ```ruby
-print my_inject([3, 234, 123, 2, 1, 23], 0,:temp)
+[1,2,3,4,4,7,7,7,9].my_inject(0){|running_total, item| running_total + item }
+```
+- Output
+
+ ```bash
+=> 44
 ```
 
 * Finally, If you have ruby installed in your system, just run `bubblesort.rb`
@@ -77,7 +118,7 @@ print my_inject([3, 234, 123, 2, 1, 23], 0,:temp)
 
 - GitHub: [@sinansevgi](https://github.com/sinansevgi)
 - LinkedIn: [@sinansevgi](https://www.linkedin.com/in/sinan-s-52559437/)
-- Twitter: [@nativeofcyber1](https://twitter.com/nativeofcyber1)
+- Twitter: [@nativeofcybers1](https://twitter.com/nativeofcybers1)
 
 
 

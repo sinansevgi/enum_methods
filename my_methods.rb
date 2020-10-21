@@ -47,7 +47,7 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-    return false unless block_given? && arg
+    return false if !block_given? && !arg
 
     array = self
     array = array.to_a if array.class == Range

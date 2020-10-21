@@ -24,7 +24,11 @@ puts "SEPARATOR"
 puts
 
 
-
+puts
+puts
+puts "****************************************"
+puts "MY SELECT"
+puts "****************************************"
 p [1, 2, 3, 4].my_select { |x| x % 2 == 0}
 puts
 p [1, 2, 3, 4].select { |x| x % 2 == 0 }#compare
@@ -72,6 +76,7 @@ puts
 puts "****************************************"
 puts "MY ANY"
 puts "****************************************"
+puts ['alpha', 'apple', 'allen key'].my_any?{ |x| x[-1] == 'y' }
 p ['lpha', 'apple', 'llen key'].my_any?{ |x| x[0] == 'a' }
 p ['lpha', 'pple', 'allen key'].any?{ |x| x[0] == 'a' }
 puts "SEPARATOR"
@@ -102,7 +107,7 @@ puts
 puts "****************************************"
 puts "MY none"
 puts "****************************************"
-p ['lpha', 'pple', 'llen key'].my_none?{ |x| x[0] == 'a' }
+p ['Alpha', 'Apple', 'Allen key'].my_none?{ |x| x[0] == 'a' }
 p ['lpha', 'pple', 'llen key'].none?{ |x| x[0] == 'a' }
 puts "SEPARATOR"
 class DeathCab
