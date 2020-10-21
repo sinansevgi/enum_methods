@@ -97,9 +97,8 @@ arr.my_count { |i| i%2==0}
 => 44
 ```
 
-u have ruby installed in your system, just run bubbleso
 ## Live Demo
-[Live Demo Link](https://repl.it/@rukundoeric/enumerable)
+[Live Demo Link](https://repl.it/@sinansevgi/enummethods#test.rb)
 
 ## Built With
 

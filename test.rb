@@ -11,9 +11,6 @@ puts "SEPARATOR"
 [1, 2, 3, 5].each { |x| p x } #compare
 puts
 puts
-
-
-puts
 puts
 puts "****************************************"
 puts "MY EACH WITH INDEX"
@@ -21,9 +18,6 @@ puts "****************************************"
 [1, 2, 3, 5].my_each_with_index { |x, y| puts "#{x} at #{y}" }
 puts "SEPARATOR"
 [1, 2, 3, 5].each_with_index { |x, y| puts "#{x} at #{y}" }#compare
-puts
-
-
 puts
 puts
 puts "****************************************"
@@ -45,8 +39,6 @@ p [:foo, :bar].my_select { |x| x == :foo }   #=> [:foo]
 puts
 p [:foo, :bar].select { |x| x == :foo }   #=> [:foo]
 puts
-
-
 puts
 puts
 puts "****************************************"
@@ -76,10 +68,6 @@ puts
 puts "****************************************"
 puts "MY ANY"
 puts "****************************************"
-puts ['alpha', 'apple', 'allen key'].my_any?{ |x| x[-1] == 'y' }
-p ['lpha', 'apple', 'llen key'].my_any?{ |x| x[0] == 'a' }
-p ['lpha', 'pple', 'allen key'].any?{ |x| x[0] == 'a' }
-puts "SEPARATOR"
 p %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
 p %w[ant bear cat].any? { |word| word.length >= 3 } #=> true
 puts "SEPARATOR"
@@ -100,12 +88,10 @@ p [].any?                                           #=> false
 puts "****************************************"
 puts
 puts
-
-
 puts
 puts
 puts "****************************************"
-puts "MY none"
+puts "MY NONE"
 puts "****************************************"
 p ['Alpha', 'Apple', 'Allen key'].my_none?{ |x| x[0] == 'a' }
 p ['lpha', 'pple', 'llen key'].none?{ |x| x[0] == 'a' }
@@ -128,33 +114,27 @@ puts "SEPARATOR"
 p [plans, plans, plans].my_none?(DeathCab)  # => output false
 p [plans, plans, plans].none?(DeathCab)  # => output false
 puts
-
-
-
 puts
 puts
 puts "****************************************"
-puts "MY Count"
+puts "MY COUNT"
 puts "****************************************"
-
 arr = [1, 2, 3, 4, 4]
 p arr.my_count { |i| i%2==0}
 p arr.count { |i| i%2==0}
 puts "SEPARATOR"
-p arr.my_count               # => 4
-p arr.count               # => 4
+p arr.my_count               # => 5
+p arr.count               # => 5
 puts "SEPARATOR"
 p [1,2,3,4,4,7,7,7,9].my_count { |i| i > 1 }
 p [1,2,3,4,4,7,7,7,9].count { |i| i > 1 }
 puts
 puts
-
 puts
 puts
 puts "****************************************"
 puts "MY Map"
 puts "****************************************"
-
 p [1,2,3,4,4,7,7,7,9].my_map { |i| i*4 }
 p [1,2,3,4,4,7,7,7,9].map { |i| i*4 }
 puts "SEPARATOR"
@@ -169,20 +149,15 @@ p [1, 2, 3].map(&:to_s)
 puts "SEPARATOR"
 my_proc = Proc.new { |i| i*4 }
 p [1,2,3,4,4,7,7,7,9].my_map { |i| i*4 }
-puts
 p [1,2,3,4,4,7,7,7,9].my_map(&my_proc)
-
 puts
 puts
-puts
-
 puts
 puts
 puts "****************************************"
 puts "MY Inject"
 puts "****************************************"
-
-# p [1,2,3,4,4,7,7,7,9].my_inject
+# p [1,2,3,4,4,7,7,7,9].my_inject #ERROR
 puts "SEPARATOR"
 p [1,2,3,4,4,7,7,7,9].my_inject(0){|running_total, item| running_total + item }
 p [1,2,3,4,4,7,7,7,9].inject(0){|running_total, item| running_total + item }
