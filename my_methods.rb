@@ -1,9 +1,4 @@
-# rubocop: disable Metrics/ModuleLength
-# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-# rubocop: disable Style/For
-
 module Enumerable
-
   def my_each
     return to_enum(:my_each) unless block_given?
 
@@ -11,6 +6,7 @@ module Enumerable
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
+    # noinspection RubyForLoopInspection
     for item in array
       yield item
     end
@@ -24,6 +20,7 @@ module Enumerable
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
+    # noinspection RubyForLoopInspection
     for i in (0...array.length)
       yield array[i], i
     end
@@ -37,6 +34,7 @@ module Enumerable
     array = array.values if array.class == Hash
 
     res = []
+    # noinspection RubyForLoopInspection
     for i in array
       res.push(i) if yield i
     end
@@ -44,13 +42,15 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-    return false if (!block_given? && !arg)
+    return false unless block_given? && arg
+
     array = self
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
     return true if array.empty?
 
+    # noinspection RubyForLoopInspection
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
@@ -59,11 +59,11 @@ module Enumerable
           return false if array[i].match(arg).nil?
         else return false unless array[i] != arg
         end
-      else return false if (!yield array[i])
+      else return false unless yield array[i]
       end
     end
 
-    return true
+    true
   end
 
   def my_any?(arg = nil)
@@ -74,6 +74,7 @@ module Enumerable
     return false if array.empty?
     return true if array.include? true
 
+    # noinspection RubyForLoopInspection
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
@@ -82,18 +83,20 @@ module Enumerable
           return true if array[i].match(arg).nil?
         else return true unless array[i] != arg
         end
-      else return true if (yield array[i])
+      else return true if yield array[i]
       end
     end
-    return false
+    false
   end
 
   def my_none?(arg = nil)
-    return true if (!block_given? && !arg)
+    return true if !block_given? && !arg
+
     array = self
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
+    # noinspection RubyForLoopInspection
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
@@ -102,21 +105,23 @@ module Enumerable
           return false if array[i].match(arg).nil?
         else return false unless array[i] != arg
         end
-      else return false if (yield array[i])
+      else return false if yield array[i]
       end
     end
 
-    return true
+    true
   end
 
   def my_count(arg = nil)
-    return self.length if (!block_given? && !arg)
+    return self.length if !block_given? && !arg
+
     array = self
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
     count = 0
 
+    # noinspection RubyForLoopInspection
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
@@ -133,19 +138,21 @@ module Enumerable
   end
 
   def my_map(arg = nil)
-    return to_enum(:my_map) if (!block_given? && !arg)
+    return to_enum(:my_map) if !block_given? && !arg
+
     array = self
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
     result_array = []
+    # noinspection RubyForLoopInspection
     for item in array
       if arg
         result_array.push(arg.yield(item))
       else result_array.push(yield item)
       end
     end
-    return result_array
+    result_array
   end
 
   def my_inject(arg1 = nil, arg2 = nil)
@@ -158,15 +165,18 @@ module Enumerable
     if arg1
       if arg2
         result = arg1
+        # noinspection RubyForLoopInspection
         for item in array
           result = result.send(arg2, item)
         end
       elsif arg1.is_a? Symbol
         result = array[0]
+        # noinspection RubyForLoopInspection
         for item in 1...array.length
           result = result.send(arg1, array[item])
         end
       else result = arg1
+      # noinspection RubyForLoopInspection
       for item in array
         result = yield result, item
       end
@@ -174,11 +184,12 @@ module Enumerable
     else
 
       result = array[0]
+      # noinspection RubyForLoopInspection
       for item in 1...array.length
         result = yield result, array[item]
       end
     end
 
-    return result
+    result
   end
 end

@@ -1,3 +1,4 @@
+# rubocop: disable all
 require_relative "my_methods.rb"
 
 puts
