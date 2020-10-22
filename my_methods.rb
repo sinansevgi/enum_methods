@@ -5,6 +5,7 @@
 # rubocop: disable Metrics/CyclomaticComplexity
 # rubocop: disable Metrics/PerceivedComplexity
 # rubocop: disable Style/IfInsideElse
+
 module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
