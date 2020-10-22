@@ -5,13 +5,14 @@
 # rubocop: disable Metrics/CyclomaticComplexity
 # rubocop: disable Metrics/PerceivedComplexity
 # rubocop: disable Style/IfInsideElse
+
 module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
 
     array = self
     array = array.to_a if array.class == Range
-    array = array.values if array.class == Hash
+    array = array.to_a if array.class == Hash
 
     for item in array
       yield item
@@ -24,11 +25,12 @@ module Enumerable
 
     array = self
     array = array.to_a if array.class == Range
-    array = array.values if array.class == Hash
+    array = array.to_a if array.class == Hash
 
     for i in (0...array.length)
       yield array[i], i
     end
+    self
   end
 
   def my_select
@@ -47,13 +49,17 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-    return false if !block_given? && !arg
-
     array = self
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
-    return true if array.empty?
+    if !block_given? && !arg
+      return false if array.include? false or array.include? nil
+
+      return true
+    end
+
+    return false if array.empty?
 
     for i in 0...array.length
       if arg
@@ -61,7 +67,7 @@ module Enumerable
           return false unless array[i].is_a?(arg)
         elsif arg.class == Regexp
           return false if array[i].match(arg).nil?
-        else return false unless array[i] != arg
+        else return false if array[i] != arg
         end
       else return false unless yield array[i]
       end
@@ -76,14 +82,22 @@ module Enumerable
     array = array.values if array.class == Hash
 
     return false if array.empty?
-    return true if array.include? true
+
+    if !block_given? && !arg
+      res = array.my_all? do |x|
+        !(x != false and !x.nil?)
+      end
+      return false if res
+
+      true
+    end
 
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
           return true if array[i].is_a?(arg)
         elsif arg.class == Regexp
-          return true if array[i].match(arg).nil?
+          return true unless array[i].match(arg).nil?
         else return true unless array[i] != arg
         end
       else return true if yield array[i]
@@ -93,19 +107,27 @@ module Enumerable
   end
 
   def my_none?(arg = nil)
-    return true if !block_given? && !arg
-
     array = self
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
+
+    if !block_given? && !arg
+      res = array.my_all? do |x|
+        !(x != false and !x.nil?)
+      end
+
+      return true if res
+
+      return false
+    end
 
     for i in 0...array.length
       if arg
         if arg.is_a? Module or arg.is_a? Class
           return false if array[i].is_a?(arg)
         elsif arg.class == Regexp
-          return false if array[i].match(arg).nil?
-        else return false unless array[i] != arg
+          return false unless array[i].match(arg).nil?
+        else return true if array[i] != arg
         end
       else return false if yield array[i]
       end
@@ -115,11 +137,11 @@ module Enumerable
   end
 
   def my_count(arg = nil)
-    return length if !block_given? && !arg
-
     array = self
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
+
+    return array.length if !block_given? && !arg
 
     count = 0
 
