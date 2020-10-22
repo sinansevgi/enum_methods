@@ -9,7 +9,10 @@ puts "****************************************"
 [1, 2, 3, 5].my_each { |x| p x }
 puts "SEPARATOR"
 [1, 2, 3, 5].each { |x| p x } #compare
-puts
+
+h = {foo: 0, bar: 1, baz: 2}
+h.each {|key, value| p "#{key}: #{value}"}  #=> foo: 0bar: 1baz: 2
+h.my_each {|key, value| p "#{key}: #{value}"}  #=> 0: 1: 2:
 puts
 puts
 puts "****************************************"
@@ -19,6 +22,25 @@ puts "****************************************"
 puts "SEPARATOR"
 [1, 2, 3, 5].each_with_index { |x, y| puts "#{x} at #{y}" }#compare
 puts
+h = {foo: 0, bar: 1, baz: 2}
+
+#each_with_index
+
+hash = Hash.new
+h.each_with_index { |item, index|
+  hash[item] = index
+}
+
+p hash  #=> {[:foo, 0]=>0, [:bar, 1]=>1, [:baz, 2]=>2}
+
+#my_each_with_index
+
+hash = Hash.new
+h.my_each_with_index { |item, index|
+  hash[item] = index
+}
+
+p hash #=> {0=>0, 1=>1, 2=>2}
 puts
 puts "****************************************"
 puts "MY SELECT"
@@ -57,7 +79,13 @@ p [1, 2i, 3.14].my_all?(Numeric)                       #=> true
 p [1, 2i, 3.14].all?(Numeric)                       #=> true
 puts "SEPARATOR"
 p [nil, true, 99].my_all?                              #=> false
-p [nil, true, 99].all?                              #=> false
+p [nil, true, 99].all?   
+puts "SEPARATOR"
+p [].all?  #=> true
+p [].my_all?  #=> false
+puts "SEPARATOR"
+p (0..5).all?  #=> true
+p (0..5).my_all?  #=> false                           #=> false
 puts
 puts
 puts
@@ -84,7 +112,29 @@ p [nil, true, 99].my_any?                              #=> true
 p [nil, true, 99].any?                              #=> true
 puts "SEPARATOR"
 p [].my_any?                                           #=> false
-p [].any?                                           #=> false
+p [].any?  
+puts "SEPARATOR"   
+puts (0..5).any?   #=> true
+puts (0..5).my_any?  #=> my_methods.rb:89:in `block in my_any?': no block given (yield) (LocalJumpError)
+puts "SEPARATOR"
+puts [false, nil].any?   #=> true
+puts [false, nil].my_any?  #=> my_methods.rb:89:in `block in my_any?': no block given (yield) (LocalJumpError)
+puts "SEPARATOR"
+puts [false, false].any?   #=> true
+puts [false, false].my_any?  #=> my_methods.rb:89:in `block in my_any?': no block given (yield) (LocalJumpError)
+puts "SEPARATOR"
+#  in the case below it checks if any word has a letter d.
+puts %w[ant bear cat].any?(/d/)    #=> false
+puts %w[ant bear cat].my_any?(/d/)   #=> true                                      #=> false
+puts "SEPARATOR"
+#  in the case below it checks if any word has a letter d.
+puts %w[ant bear cat].any?(/c/)    #=> false
+puts %w[ant bear cat].my_any?(/c/)   #=> true                                      #=> false
+puts "****************************************"
+puts "SEPARATOR"
+#  in the case below it checks if any word has a letter d.
+puts %w[ant bear cat].any?(/cat/)    #=> false
+puts %w[ant bear cat].my_any?(/cat/)   #=> true                                      #=> false
 puts "****************************************"
 puts
 puts
@@ -113,7 +163,19 @@ p [1.12, 3.14, 3.15].none?(String)  # => output true
 puts "SEPARATOR"
 p [plans, plans, plans].my_none?(DeathCab)  # => output false
 p [plans, plans, plans].none?(DeathCab)  # => output false
-puts
+puts "SEPARATOR"
+
+puts %w{ant bear cat}.none?(/d/)    #=> true
+puts %w{ant bear cat}.my_none?(/d/)  #=> false
+puts "SEPARATOR"
+puts [nil, false, true].none?          #=> false
+puts [nil, false, true].my_none?   #=> true
+puts "SEPARATOR"
+puts [nil, false, false].none?          #=> false
+puts [nil, false, false].my_none?   #=> true
+puts "SEPARATOR"
+puts (0..4).none?    #=> false
+puts (0..4).my_none?  #=> true
 puts
 puts
 puts "****************************************"
@@ -153,41 +215,41 @@ p [1,2,3,4,4,7,7,7,9].my_map(&my_proc)
 puts
 puts
 puts
-puts
-puts "****************************************"
-puts "MY Inject"
-puts "****************************************"
-# p [1,2,3,4,4,7,7,7,9].my_inject #ERROR
-puts "SEPARATOR"
-p [1,2,3,4,4,7,7,7,9].my_inject(0){|running_total, item| running_total + item }
-p [1,2,3,4,4,7,7,7,9].inject(0){|running_total, item| running_total + item }
-puts "SEPARATOR"
-p (5..10).my_inject(:+)
-p (5..10).inject(:+)
-puts "SEPARATOR"
-p (5..10).my_inject { |sum, n| sum + n }
-p (5..10).inject { |sum, n| sum + n }
-puts "SEPARATOR"
-p (5..10).my_inject(1, :*)
-p (5..10).inject(1, :*)
-puts "SEPARATOR"
-p (5..10).my_inject(1) { |product, n| product * n }
-p (5..10).inject(1) { |product, n| product * n }
-puts "SEPARATOR"
-p [2,4,5].my_inject(:*) #POINT NUMBER 10
-p [2,4,5].inject(:*) #POINT NUMBER 10
-puts
-longest = %w{ cat sheep bear }.my_inject do |memo, word|
- memo.length > word.length ? memo : word
-end
-p longest
-puts
-longest = %w{ cat sheep bear }.inject do |memo, word|
- memo.length > word.length ? memo : word
-end
-p longest
+# puts
+# puts "****************************************"
+# puts "MY Inject"
+# puts "****************************************"
+# # p [1,2,3,4,4,7,7,7,9].my_inject #ERROR
+# puts "SEPARATOR"
+# p [1,2,3,4,4,7,7,7,9].my_inject(0){|running_total, item| running_total + item }
+# p [1,2,3,4,4,7,7,7,9].inject(0){|running_total, item| running_total + item }
+# puts "SEPARATOR"
+# p (5..10).my_inject(:+)
+# p (5..10).inject(:+)
+# puts "SEPARATOR"
+# p (5..10).my_inject { |sum, n| sum + n }
+# p (5..10).inject { |sum, n| sum + n }
+# puts "SEPARATOR"
+# p (5..10).my_inject(1, :*)
+# p (5..10).inject(1, :*)
+# puts "SEPARATOR"
+# p (5..10).my_inject(1) { |product, n| product * n }
+# p (5..10).inject(1) { |product, n| product * n }
+# puts "SEPARATOR"
+# p [2,4,5].my_inject(:*) #POINT NUMBER 10
+# p [2,4,5].inject(:*) #POINT NUMBER 10
+# puts
+# longest = %w{ cat sheep bear }.my_inject do |memo, word|
+#  memo.length > word.length ? memo : word
+# end
+# p longest
+# puts
+# longest = %w{ cat sheep bear }.inject do |memo, word|
+#  memo.length > word.length ? memo : word
+# end
+# p longest
 
 
-=begin
-p multiply_els([2,4,5])
-=end
+# =begin
+# p multiply_els([2,4,5])
+# =end
