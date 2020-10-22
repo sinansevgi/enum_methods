@@ -30,6 +30,7 @@ module Enumerable
     for i in (0...array.length)
       yield array[i], i
     end
+    self
   end
 
   def my_select
@@ -66,7 +67,7 @@ module Enumerable
           return false unless array[i].is_a?(arg)
         elsif arg.class == Regexp
           return false if array[i].match(arg).nil?
-        else return false unless array[i] != arg
+        else return false if array[i] != arg
         end
       else return false unless yield array[i]
       end
@@ -88,7 +89,7 @@ module Enumerable
       end
       return false if res
 
-      return true
+      true
     end
 
     for i in 0...array.length
@@ -125,8 +126,8 @@ module Enumerable
         if arg.is_a? Module or arg.is_a? Class
           return false if array[i].is_a?(arg)
         elsif arg.class == Regexp
-          return true if array[i].match(arg).nil?
-        else return false if array[i] != arg
+          return false unless array[i].match(arg).nil?
+        else return true if array[i] != arg
         end
       else return false if yield array[i]
       end
@@ -136,11 +137,11 @@ module Enumerable
   end
 
   def my_count(arg = nil)
-    return length if !block_given? && !arg
-
     array = self
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
+
+    return array.length if !block_given? && !arg
 
     count = 0
 
