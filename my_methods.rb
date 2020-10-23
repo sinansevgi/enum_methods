@@ -84,6 +84,8 @@ module Enumerable
     return false if array.empty?
 
     if !block_given? && !arg
+      return true if array.include?(true) or array.include?(!nil)
+
       res = array.my_all? do |x|
         !(x != false and !x.nil?)
       end
@@ -127,7 +129,9 @@ module Enumerable
           return false if array[i].is_a?(arg)
         elsif arg.class == Regexp
           return false unless array[i].match(arg).nil?
-        else return true if array[i] != arg
+        else
+          return false if array[i] == arg
+          # return true if array[i] != arg
         end
       else return false if yield array[i]
       end
