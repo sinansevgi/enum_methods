@@ -84,14 +84,14 @@ module Enumerable
     return false if array.empty?
 
     if !block_given? && !arg
-      return true if array.include?(true) or array.include?(!nil)
+      return true if array.include?(true)
 
       res = array.my_all? do |x|
         !(x != false and !x.nil?)
       end
       return false if res
 
-      true
+      return true
     end
 
     for i in 0...array.length
@@ -131,7 +131,6 @@ module Enumerable
           return false unless array[i].match(arg).nil?
         else
           return false if array[i] == arg
-          # return true if array[i] != arg
         end
       else return false if yield array[i]
       end
@@ -219,6 +218,12 @@ module Enumerable
     end
 
     result
+  end
+end
+
+def multiply_els(array)
+  array.my_inject do |result, item|
+    result * item
   end
 end
 
