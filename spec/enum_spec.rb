@@ -145,5 +145,17 @@ RSpec.describe Enumerable do
         expect(arr1.my_map(proc_sample)).to eq([0.5, 1, 1.5, 2, 3])
       end
     end
+
+    describe '#my_inject' do
+      it 'return a number according to the given argument' do
+        expect(arr1.my_inject(5, :+)).to eq(21)
+        expect(arr1.my_inject(5, '+')).to eq(21)
+      end
+
+      it 'return a number acording to the block and the argment given' do
+        expect(arr1.my_inject(2) { |sum, number| sum + number }).to eq(18)
+        expect(arr1.my_inject { |sum, number| sum - number }).to eq(-14)
+      end
+    end
   end
 end
