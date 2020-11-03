@@ -3,3 +3,5 @@
 /.config
 /coverage/
 /.idea/
+
+/Gemfile.lock
