@@ -42,6 +42,10 @@ RSpec.describe Enumerable do
       it 'return false if array is empty' do
         expect([].my_all?).to eq(true)
       end
+      it 'return true if noblock given and no parameters' do
+        expect(arr1.my_all?).to eq(true)
+      end
+
       it 'return true or false if noblock given and no parameters' do
         expect(arr1.my_all?).to eq(true)
         expect([2, false, 3].my_all?).to eq(false)
@@ -150,6 +154,7 @@ RSpec.describe Enumerable do
       it 'return a number according to the given argument' do
         expect(arr1.my_inject(5, :+)).to eq(21)
         expect(arr1.my_inject(5, '+')).to eq(21)
+        expect(arr1.my_inject(:+)).to eq(16)
       end
 
       it 'return a number acording to the block and the argment given' do
@@ -157,5 +162,12 @@ RSpec.describe Enumerable do
         expect(arr1.my_inject { |sum, number| sum - number }).to eq(-14)
       end
     end
+
+    describe '#multiply_els' do
+      it 'return a multiplication of all elements' do
+        expect(multiply_els(arr1)).to eq(144)
+      end
+    end
+
   end
 end
