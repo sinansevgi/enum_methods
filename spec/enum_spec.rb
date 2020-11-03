@@ -109,5 +109,41 @@ RSpec.describe Enumerable do
         expect(arr1.my_none? { |n| n < 0 }).to eq(true)
       end
     end
+
+    describe '#my_count' do
+      it 'return false if array is empty' do
+        expect([].my_count).to eq(0)
+      end
+      it 'return length of elements in array' do
+        expect(arr1.my_count).to eq(5)
+        expect([false, nil].my_count).to eq(2)
+      end
+
+      it 'return length of elements in array according to a given argument' do
+        expect(arr1.my_count(5)).to eq(0)
+        expect([1, 3, 5].my_count(3)).to eq(1)
+        expect([nil, 2.5, 3].my_count(Integer)).to eq(1)
+        expect([false, 3.5, 9.5].my_count(Integer)).to eq(0)
+        expect(%w[eric david].my_count(/o/)).to eq(0)
+        expect(%w[eric dave].my_count(/i/)).to eq(1)
+        expect(arr1.my_count(&:even?)).to eq(3)
+      end
+
+      it 'return true or false if block is given' do
+        expect(arr1.my_count { |n| n > 5 }).to eq(1)
+        expect(arr1.my_count { |n| n < 0 }).to eq(0)
+      end
+    end
+
+    describe '#my_map' do
+      it 'return new array of elements according to a given block' do
+        expect(arr1.my_map { |n| n > 5 }).to eq([false, false, false, false, true])
+        expect(arr1.my_map { |n| n < 0 }).to eq([false, false, false, false, false])
+        expect(arr1.my_map { |n| n * 2 }).to eq([2, 4, 6, 8, 12])
+
+        proc_sample = proc { |n| n.to_f / 2 }
+        expect(arr1.my_map(proc_sample)).to eq([0.5, 1, 1.5, 2, 3])
+      end
+    end
   end
 end
