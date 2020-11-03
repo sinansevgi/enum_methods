@@ -113,6 +113,8 @@ module Enumerable
     array = array.to_a if array.class == Range
     array = array.values if array.class == Hash
 
+    return true if array.empty?
+
     if !block_given? && !arg
       res = array.my_all? do |x|
         !(x != false and !x.nil?)

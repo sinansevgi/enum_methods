@@ -61,5 +61,53 @@ RSpec.describe Enumerable do
         expect(arr1.my_all? { |n| n > 0 }).to eq(true)
       end
     end
+
+    describe '#my_any' do
+      it 'return false if array is empty' do
+        expect([].my_any?).to eq(false)
+      end
+      it 'return true or false if noblock given and no parameters' do
+        expect(arr1.my_any?).to eq(true)
+        expect([false, nil].my_any?).to eq(false)
+      end
+
+      it 'return true or false if parameter is passed and no block given' do
+        expect(arr1.my_any?(5)).to eq(false)
+        expect([1, 3, 5].my_any?(3)).to eq(true)
+        expect([nil, 2.5, 3].my_any?(Integer)).to eq(true)
+        expect([false, 3.5, 9.5].my_any?(Integer)).to eq(false)
+        expect(%w[eric david].my_any?(/o/)).to eq(false)
+        expect(%w[eric dave].my_any?(/i/)).to eq(true)
+      end
+
+      it 'return true or false if block is given' do
+        expect(arr1.my_any? { |n| n > 5 }).to eq(true)
+        expect(arr1.my_any? { |n| n < 0 }).to eq(false)
+      end
+    end
+
+    describe '#my_none' do
+      it 'return false if array is empty' do
+        expect([].my_none?).to eq(true)
+      end
+      it 'return true or false if noblock given and no parameters' do
+        expect(arr1.my_none?).to eq(false)
+        expect([false, nil].my_none?).to eq(true)
+      end
+
+      it 'return true or false if parameter is passed and no block given' do
+        expect(arr1.my_none?(5)).to eq(true)
+        expect([1, 3, 5].my_none?(3)).to eq(false)
+        expect([nil, 2.5, 3].my_none?(Integer)).to eq(false)
+        expect([false, 3.5, 9.5].my_none?(Integer)).to eq(true)
+        expect(%w[eric david].my_none?(/o/)).to eq(true)
+        expect(%w[eric dave].my_none?(/i/)).to eq(false)
+      end
+
+      it 'return true or false if block is given' do
+        expect(arr1.my_none? { |n| n > 5 }).to eq(false)
+        expect(arr1.my_none? { |n| n < 0 }).to eq(true)
+      end
+    end
   end
 end
