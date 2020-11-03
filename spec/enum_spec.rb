@@ -168,6 +168,5 @@ RSpec.describe Enumerable do
         expect(multiply_els(arr1)).to eq(144)
       end
     end
-
   end
 end
